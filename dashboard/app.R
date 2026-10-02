@@ -1,6 +1,6 @@
 library(shiny); library(bslib); library(tidyverse); library(plotly)
 
-d <- read_csv("../data/processed/clean_data.csv")
+d <- read_csv("clean_data.csv")
 
 # Whole-country rate per year, weighted by number of invited people
 # (invited = participants / rate * 100)
