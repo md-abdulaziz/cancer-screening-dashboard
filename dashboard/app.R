@@ -1,6 +1,17 @@
 library(shiny); library(bslib); library(tidyverse); library(plotly)
+library(DBI); library(RSQLite)
 
-d <- read_csv("clean_data.csv")
+db_path <- c("screening.sqlite", "dashboard/screening.sqlite", "../data/processed/screening.sqlite")
+db_path <- db_path[file.exists(db_path)][1]
+con <- dbConnect(SQLite(), db_path)
+d <- as_tibble(dbGetQuery(con,
+                          "SELECT screening, year, region, rate, absolute_value
+   FROM screening
+   WHERE rate IS NOT NULL"))
+dbDisconnect(con)
+
+# Whole-country rate per year, weighted by number of invited people
+# (invited = participants / rate * 100)
 
 # Whole-country rate per year, weighted by number of invited people
 # (invited = participants / rate * 100)
